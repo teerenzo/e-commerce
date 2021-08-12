@@ -287,10 +287,10 @@
                                                 <!-- start product image -->
                                                 <a href="short-description.php?id=<?php echo $prod_id  ?>">
                                                     <!-- image -->
-                                                    <img class="primary blur-up lazyload" data-src="admin/productimages/<?php echo $row1[0] . "/" . $row1[9]  ?>" src="admin/productimages/<?php echo $row1[0] . "/" . $row1[9]  ?>" alt="image" title="product">
+                                                    <img class="primary blur-up lazyload" data-src="admin/productimages/<?php echo $row1[0] . "/" . $row1[8]  ?>" src="admin/productimages/<?php echo $row1[0] . "/" . $row1[8]  ?>" alt="image" title="product">
                                                     <!-- End image -->
                                                     <!-- Hover image -->
-                                                    <img class="hover blur-up lazyload" data-src="admin/productimages/<?php echo $row1[0] . "/" . $row1[10]  ?>" src="admin/productimages/<?php echo $row1[0] . "/" . $row1[9]  ?>" alt="image" title="product">
+                                                    <img class="hover blur-up lazyload" data-src="admin/productimages/<?php echo $row1[0] . "/" . $row1[9]  ?>" src="admin/productimages/<?php echo $row1[0] . "/" . $row1[9]  ?>" alt="<?php echo $row1[9] ?>" title="product">
                                                     <!-- End hover image -->
                                                     <!-- product label -->
                                                     <div class="product-labels rectangular"><span class="lbl on-sale">-16%</span> <span class="lbl pr-label1">new</span></div>
@@ -299,8 +299,9 @@
                                                 <!-- end product image -->
 
                                                 <!-- Start product button -->
-                                                <form class="variants add" action="#" onclick="window.location.href='cart.php'" method="post">
-                                                    <button class="btn btn-addto-cart" type="button" tabindex="0">Add To Cart</button>
+                                                <form class="variants add" action="#" method="post">
+                                                    <input type="hidden" name="prod_id" value="<?php echo $row1[0]; ?>" id="">
+                                                    <button class="btn btn-addto-cart" type="submit" name="add_to_cart" tabindex="0">Add To Cart</button>
                                                 </form>
                                                 <div class="button-set">
                                                     <a href="javascript:void(0)" title="Quick View" class="quick-view-popup quick-view" data-toggle="modal" data-target="#content_quickview">

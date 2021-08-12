@@ -1,9 +1,43 @@
 <?php
 session_start();
-//error_reporting(0);
+error_reporting(0);
 require 'config.php';
-
 $user_id = $_SESSION['user_id'];
+$pro_id=$_POST['prod_id'];
+if(isset($_POST['add_to_cart']) AND strlen($_SESSION['email'])!=0){
+   
+    $check_exist=mysqli_query($con,"SELECT * from cart where p_id='$pro_id'");
+    if(mysqli_num_rows($check_exist)!=0){
+        $update_prod= mysqli_query($con,"UPDATE `cart` set qty=qty+1");
+        if($update_prod){
+            ?>
+  <script>alert('Product Added to Cart');
+        window.history(go(-1));
+        </script>
+            <?php
+        }
+    }else{
+        $pro_id=$_POST['prod_id'];
+        $ip=$_SERVER['REMOTE_ADDR'];
+       
+        $insert_into_cart=mysqli_query($con,"INSERT INTO cart(p_id,ip_add,user_id,qty) values('$pro_id','$ip','$user_id','1')");
+    
+        if($insert_into_cart){
+            ?>
+              <script>alert('Product Added to Cart');
+            window.history(go(-1));
+            </script>
+            <?php
+        }
+    }
+    //echo $_POST['prod_id'];
+   
+
+}else{
+
+}
+
+
 $select_cart_product = mysqli_query($con, "SELECT * FROM `cart` WHERE `user_id`='$user_id'");
 ?>
 
@@ -283,8 +317,8 @@ $select_cart_product = mysqli_query($con, "SELECT * FROM `cart` WHERE `user_id`=
                                                         <img src="admin/productimages/<?php echo $row1[0] . "/" . $row1[9]  ?>" alt="<?php echo $row1[3] ?>" title="" />
                                                     </a>
                                                     <div class="product-details">
-                                                        <a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
-                                                        <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
+                                                        <a href="delete.php?id=<?php echo $row[0] ?>" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
+                                                        <a href="update.php?id=<?php echo $row[0] ?>" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
                                                         <a class="pName" href="cart.php"><?php echo $row1[3]  ?></a>
                                                         <div class="variant-cart">Black / XL</div>
                                                         <div class="wrapQtyBtn">
@@ -314,8 +348,8 @@ $select_cart_product = mysqli_query($con, "SELECT * FROM `cart` WHERE `user_id`=
                                                     <img src="admin/productimages/<?php echo $row1[0] . "/" . $row1[9]  ?>" alt="<?php echo $row1[3] ?>" title="" />
                                                 </a>
                                                 <div class="product-details">
-                                                    <a href="#" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
-                                                    <a href="#" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
+                                                    <a href="" class="remove"><i class="anm anm-times-l" aria-hidden="true"></i></a>
+                                                    <a href="<?php echo $row1[0] ?>" class="edit-i remove"><i class="anm anm-edit" aria-hidden="true"></i></a>
                                                     <a class="pName" href="cart.php"><?php echo $row1[3]  ?></a>
                                                     <div class="variant-cart">Black / XL</div>
                                                     <div class="wrapQtyBtn">
@@ -364,7 +398,14 @@ $select_cart_product = mysqli_query($con, "SELECT * FROM `cart` WHERE `user_id`=
                                         </div>
                                     </li> -->
                                 </ul>
-                                <div class="total">
+                                <?php
+                                if(mysqli_num_rows($select_cart_product)<=0){ ?>
+                                    <div class="total">
+                                   <p><b>No product in cart</b></p>
+                                </div>
+                               <?php }else{
+                                   ?>
+                                     <div class="total">
                                     <div class="total-in">
                                         <span class="label">Cart Subtotal:</span><span class="product-price"><span class="money">$748.00</span></span>
                                     </div>
@@ -373,6 +414,13 @@ $select_cart_product = mysqli_query($con, "SELECT * FROM `cart` WHERE `user_id`=
                                         <a href="checkout.php" class="btn btn-secondary btn--small">Checkout</a>
                                     </div>
                                 </div>
+
+
+<?php
+                               }
+
+                                ?>
+                              
                             </div>
                             <!--EndMinicart Popup-->
                         </div>

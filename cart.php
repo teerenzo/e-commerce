@@ -21,7 +21,9 @@
 </head>
 
 <?php
-include('includes/topnav.php')
+include('includes/topnav.php');
+
+$select_cart_product = mysqli_query($con, "SELECT * FROM `cart` WHERE `user_id`='$user_id'");
 ?>
 <br><br><br>
 <!--Mobile Menu-->
@@ -210,13 +212,27 @@ include('includes/topnav.php')
                             </tr>
                         </thead>
                         <tbody>
+                            <?php
+                            if(mysqli_num_rows($select_cart_product)<=0){
+                                ?>
+<p><b>No product in cart</b></p>
+
+<?php
+                            }
+                        while ($row = mysqli_fetch_array($select_cart_product)) {
+                                        //select product
+                                        $pro_id1 = $row['p_id'];
+                                        $select_pro2 = mysqli_query($con, "SELECT * FROM `products` WHERE id='$pro_id1'");
+                                        if ($select_pro2) {
+                                            while ($row1 = mysqli_fetch_array($select_pro2)) {
+                                                ?>
                             <tr class="cart__row border-bottom line1 cart-flex border-top">
                                 <td class="cart__image-wrapper cart-flex-item">
-                                    <a href="#"><img class="cart__image" src="assets/images/product-images/product-image1.jpg" alt="Elastic Waist Dress - Navy / Small"></a>
+                                    <a href="#"><img class="cart__image" src="admin/productimages/<?php echo $row1[0] . "/" . $row1[9]  ?>" alt="admin/productimages/<?php echo $row1[3]  ?>"></a>
                                 </td>
                                 <td class="cart__meta small--text-left cart-flex-item">
                                     <div class="list-view-item__title">
-                                        <a href="#">Elastic Waist Dress </a>
+                                        <a href="#"><?php echo $row1[3]  ?></a>
                                     </div>
 
                                     <div class="cart__meta-text">
@@ -224,74 +240,25 @@ include('includes/topnav.php')
                                     </div>
                                 </td>
                                 <td class="cart__price-wrapper cart-flex-item">
-                                    <span class="money">$735.00</span>
+                                    <span class="money"><?php echo $row1['productPrice']." Frw" ?></span>
                                 </td>
                                 <td class="cart__update-wrapper cart-flex-item text-right">
                                     <div class="cart__qty text-center">
                                         <div class="qtyField">
                                             <a class="qtyBtn minus" href="javascript:void(0);"><i class="icon icon-minus"></i></a>
-                                            <input class="cart__qty-input qty" type="text" name="updates[]" id="qty" value="1" pattern="[0-9]*">
+                                            <input class="cart__qty-input qty" type="text" name="updates[]" id="qty" value="<?php echo $row['qty'] ?>" pattern="[0-9]*">
                                             <a class="qtyBtn plus" href="javascript:void(0);"><i class="icon icon-plus"></i></a>
                                         </div>
                                     </div>
                                 </td>
                                 <td class="text-right small--hide cart-price">
-                                    <div><span class="money">$735.00</span></div>
+                                    <div><span class="money"><?php echo $row1['productPrice'] * $row['qty']." Frw"   ?></span></div>
                                 </td>
-                                <td class="text-center small--hide"><a href="#" class="btn btn--secondary cart__remove" title="Remove tem"><i class="icon icon anm anm-times-l"></i></a></td>
+                                <td class="text-center small--hide"><a href="delete.php?id=<?php echo $row[0] ?>" class="btn btn--secondary cart__remove" title="Remove tem"><i class="icon icon anm anm-times-l"></i></a></td>
                             </tr>
-                            <tr class="cart__row border-bottom line1 cart-flex border-top">
-                                <td class="cart__image-wrapper cart-flex-item">
-                                    <a href="#"><img class="cart__image" src="assets/images/product-images/product-image3.jpg" alt="3/4 Sleeve Kimono Dress"></a>
-                                </td>
-                                <td class="cart__meta small--text-left cart-flex-item">
-                                    <div class="list-view-item__title">
-                                        <a href="#">3/4 Sleeve Kimono Dress</a>
-                                    </div>
-                                </td>
-                                <td class="cart__price-wrapper cart-flex-item">
-                                    <span class="money">$735.00</span>
-                                </td>
-                                <td class="cart__update-wrapper cart-flex-item text-right">
-                                    <div class="cart__qty text-center">
-                                        <div class="qtyField">
-                                            <a class="qtyBtn minus" href="javascript:void(0);"><i class="icon icon-minus"></i></a>
-                                            <input class="cart__qty-input qty" type="text" name="updates[]" id="qty" value="1" pattern="[0-9]*">
-                                            <a class="qtyBtn plus" href="javascript:void(0);"><i class="icon icon-plus"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-right small--hide cart-price">
-                                    <div><span class="money">$735.00</span></div>
-                                </td>
-                                <td class="text-center small--hide"><a href="#" class="btn btn--secondary cart__remove" title="Remove tem"><i class="icon icon anm anm-times-l"></i></a></td>
-                            </tr>
-                            <tr class="cart__row border-bottom line1 cart-flex border-top">
-                                <td class="cart__image-wrapper cart-flex-item">
-                                    <a href="#"><img class="cart__image" src="assets/images/product-images/product-image6.jpg" alt="Minerva Dress black"></a>
-                                </td>
-                                <td class="cart__meta small--text-left cart-flex-item">
-                                    <div class="list-view-item__title">
-                                        <a href="#">Minerva Dress black</a>
-                                    </div>
-                                </td>
-                                <td class="cart__price-wrapper cart-flex-item">
-                                    <span class="money">$526.00</span>
-                                </td>
-                                <td class="cart__update-wrapper cart-flex-item text-right">
-                                    <div class="cart__qty text-center">
-                                        <div class="qtyField">
-                                            <a class="qtyBtn minus" href="javascript:void(0);"><i class="icon icon-minus"></i></a>
-                                            <input class="cart__qty-input qty" type="text" name="updates[]" id="qty" value="1" pattern="[0-9]*">
-                                            <a class="qtyBtn plus" href="javascript:void(0);"><i class="icon icon-plus"></i></a>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="text-right small--hide cart-price">
-                                    <div><span class="money">$735.00</span></div>
-                                </td>
-                                <td class="text-center small--hide"><a href="#" class="btn btn--secondary cart__remove" title="Remove tem"><i class="icon icon anm anm-times-l"></i></a></td>
-                            </tr>
+
+                            <?php } } }?>
+                          
                         </tbody>
                         <tfoot>
                             <tr>
